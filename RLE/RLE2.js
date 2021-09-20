@@ -8,10 +8,10 @@ fs.readFile("outcode.txt", "utf-8", function(err, data){ //читает данн
     while (i < inText.length){  //прогоняет i через весь текст
         symb=inText.charAt(i); //переменная, в которую записывает прогоняемый знак        
         if (symb=="#"){
-            nextsymb=inText.charAt(i+1);  //НЕ ЗАБЫВАТЬ ЧИТАТЬ КАЖДУЮ КОМАНДУ!!!! НЕ ЗАБЫВАТЬ, ЧТО НАДО БРАТЬ ИЗ ФАЙЛА!!!!!!!!!!!!!!!!!!!!
+            nextsymb=inText.charAt(i+1);  //НЕ ЗАБЫВАТЬ ЧИТАТЬ КАЖДУЮ КОМАНДУ!!! НЕ ЗАБЫВАТЬ, ЧТО НАДО БРАТЬ ИЗ ФАЙЛА!!!(для себя)
             numbersymb=nextsymb.charCodeAt();             
-            outcode+=inText.charAt(i+2).repeat(numbersymb);
-            i=i+3;
+            outcode+=inText.charAt(i+2).repeat(numbersymb); //берем букву, которая находится в 2 знаках от решетки, и повторяем её столько раз, чему равен декодированный numbersymb
+            i=i+3; //после этого, перенести i на 3 знака вперед, проверять следующие знаки в строке
         }
         else{
             outcode+=symb;
