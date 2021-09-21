@@ -14,11 +14,11 @@ fs.readFile("input.txt", "utf-8", function(err, data){ //читает данны
         if(n>=4) {                                      //если n превзошёл 4, то его надо сжать
             if(n>=255){
                 m=Math.floor(n/255);      //округление до меньшего                           
-                outcode+=("#" + String.fromCharCode(255) + symb).repeat(m)+ "#" + String.fromCharCode(n-m*255) + symb; //тут всё ясно
+                outcode+=("#" + String.fromCharCode(255) + symb).repeat(m)+ "#" + String.fromCharCode(n-m*255) + symb; //если счетчик превысил 255, то после решетки идёт зашифрованное 255 и повторяется столько раз, чему равен m
 
             }
             else
-            outcode+="#" + String.fromCharCode(n) + symb;
+            outcode+="#" + String.fromCharCode(n) + symb; //если же не превысил 255, то после решетки идёт зашифрованное число меньше 255, а потом сам символ
         }
         else 
             outcode+=symb.repeat(n);       //записывает символы, число повторения которых меньше 4
