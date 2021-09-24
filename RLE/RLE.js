@@ -14,7 +14,7 @@ fs.readFile("input.txt", "utf-8", function(err, data){ //читает данны
         if(n>=4) {                                      //если n превзошёл 4, то его надо сжать
             if(n>=258){
                 m=Math.floor(n/258);      //округление до меньшего                           
-                outcode+=("#" + String.fromCharCode(255) + symb).repeat(m)+ "#" + String.fromCharCode(n-m*255-3) + symb; //если счетчик превысил 258, то после решетки идёт зашифрованное 255 и действите повторяется столько раз, чему равен m + идёт зашифрованное число меньше 255, если оно есть
+                outcode+=("#" + String.fromCharCode(255) + symb).repeat(m)+ "#" + String.fromCharCode(n-m*258-3) + symb; //если счетчик превысил 258, то после решетки идёт зашифрованное 255 и действите повторяется столько раз, чему равен m + идёт зашифрованное число меньше 255, если оно есть
 
             }
             else
@@ -25,7 +25,7 @@ fs.readFile("input.txt", "utf-8", function(err, data){ //читает данны
         i += n;             //запускает всё по новой
         n = 1;
         }
-    //console.log (outcode); 
+    console.log (outcode); 
     fs.writeFileSync("outcode.txt", String(outcode));           //записывает всё в файл ауткод
 }
 )
