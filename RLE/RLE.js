@@ -25,7 +25,7 @@ fs.readFile("input.txt", "utf-8", function(err, data){ //читает данны
         i += n;             //запускает всё по новой
         n = 1;
         }
-    console.log (outcode); 
+   // console.log (outcode); 
     fs.writeFileSync("outcode.txt", String(outcode));           //записывает всё в файл ауткод
 }
 )
