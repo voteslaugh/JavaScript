@@ -7,17 +7,27 @@ fs.readFile("outcode.txt", "utf-8", function(err, data){ //читает данн
     inText=data.toString(); //переводит данные в файле в переменную
     while (i<inText.length){
     if ((inText.charAt(i)=='#')) {
-		if (inText.charAt(i+2)=='#')
+		if (inText.charAt(i+2)=='#'){
 			outcode+=('#').repeat(inText.charCodeAt(i+1))
-		else 
+			//console.log(outcode + "1");
+			//console.log(i + "1");
+			i=i+6;
+		}
+		else  {
 			outcode+=(inText.charAt(i+2)).repeat(inText.charCodeAt(i+1)+4)
-		i=i+3
+			//console.log(outcode + "2");
+			//console.log(i + "2");
+			i=i+3
+		}
 	}
 	else {
-        outcode+=inText.charAt(i);	
+        outcode+=inText.charAt(i);
+		//console.log(outcode + "3");
+		//console.log(i + "3");
         i++;
 	}
 	}
-fs.writeFileSync("decode.txt", String(outcode));
-})
+	fs.writeFileSync("decode.txt", String(outcode));
+}
+)
 //String.charCodeAt
