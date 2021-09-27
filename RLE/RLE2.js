@@ -11,7 +11,7 @@ fs.readFile("outcode.txt", "utf-8", function(err, data){ //читает данн
 			outcode+=('#').repeat(inText.charCodeAt(i+1))
 			//console.log(outcode + "1");
 			//console.log(i + "1");
-			i=i+6;
+			i=i+3;
 		}
 		else  {
 			outcode+=(inText.charAt(i+2)).repeat(inText.charCodeAt(i+1)+4)
