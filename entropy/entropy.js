@@ -4,7 +4,7 @@ let i, n = 0;	//прогоняемый символ + счетчик
 let entr = 0//переменная с энтропией
 let alph = new Array()//переменная-"массив" для символов строки
 
-let inputData = fs.readFileSync('test2.txt').toString();//переменная с данными файла, перенесенными в строку
+let inputData = fs.readFileSync('test3.txt').toString();//переменная с данными файла, перенесенными в строку
 
 for (i = 0 ; i<inputData.length; i++){		//инициализация алфавита
 	alph[inputData.charAt(i)] = 0
@@ -24,6 +24,4 @@ if (n>1){
 	for (i in alph)
 		entr-=(alph[i])*(Math.log(alph[i])/Math.log(n));	//энтропия
 }
-else
-	entr=0
 console.log(entr)
