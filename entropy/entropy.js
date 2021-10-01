@@ -1,33 +1,29 @@
-let fs = require('fs');//объект для работы с файловой системой
-let arg = process.argv;//объект для работы с аргументами командной строки
-let n = 0;  //переменная-счетчик
-let entr = 0;
-let alph = new Array();//объект типа как-бы "массив"
-let freq = new Array(); //переменная частоты
-inputData = fs.readFileSync('test1.txt');//байтовый буфер //можно заменить на test2.txt/test3.txt
-inputData = inputData.toString();//преобразовывает байтовый буфер в строку
-for (i=0 ; i<inputData.length; i++){ //"прогоняем" i через строку
-	alph[inputData.charAt(i)] = 0;
+let fs = require('fs');
+let arg = process.argv;
+let i, n = 0;	//прогоняемый символ + счетчик
+let entr = 0//переменная с энтропией
+let alph = new Array()//переменная-"массив" для символов строки
+
+let inputData = fs.readFileSync('test2.txt').toString();//переменная с данными файла, перенесенными в строку
+
+for (i = 0 ; i<inputData.length; i++){		//инициализация алфавита
+	alph[inputData.charAt(i)] = 0
 }
-//отсчитываем число повторений букв
-for (i=0 ; i<inputData.length; i++){
+
+for (i = 0 ; i<inputData.length; i++){ //подсчёт всех букв, кол-ва их повторов
 	alph[inputData.charAt(i)]++;
 }
-console.log(alph);        //"массив" символов
-for (i in alph){
-	freq[i]=alph[i]/inputData.length;     //высчет частоты
+console.log(alph);
+
+for (i in alph){				//частота
+	alph[i]/=inputData.length;
 	n++;
 }
-for (i in alph){
-    if(freq[i]==1){      //отдельный случай для одного символа
-        entr=0;
-    }
-    else{
-	entr-=freq[i]*(Math.log(freq[i])/Math.log(n)); //энтропия
+
+if (n>1){
+	for (i in alph)
+		entr-=(alph[i])*(Math.log(alph[i])/Math.log(n));	//энтропия
 }
-
-}
-
-
-
-console.log(entr);
+else
+	entr=0
+console.log(entr)
