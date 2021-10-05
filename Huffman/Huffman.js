@@ -28,36 +28,36 @@ for (let i in alph)
  
 for (let i = 0; i < tree.length - 1; i++){
     //Поиск узлов с минимальным кол-вом включений
-    let minFr1 = inputData.length;
-    let minFr2 = inputData.length;
-    let first = -1;
-    let second = -1;
+    let min1 = inputData.length;
+    let min2 = inputData.length;
+    let id1 = -1;
+    let id2 = -1;
     for (let j = 0; j < tree.length; j++){
-        if (tree[j].freq < minFr1 && !tree[j].used){
-            minFr1 = tree[j].freq;
-            first = j;
+        if (tree[j].freq < min1 && !tree[j].used){
+            min1 = tree[j].freq;
+            id1 = j;
         }    
     }
  
     for (let j = 0; j < tree.length; j++){
-        if (tree[j].freq < minFr2 && j != first && !tree[j].used){
-            minFr2 = tree[j].freq;
-            second = j;
+        if (tree[j].freq < min2 && j != id1 && !tree[j].used){
+            min2 = tree[j].freq;
+            id2 = j;
         }    
     }
  
-    if (first == -1 || second == -1){
+    if (id1 == -1 || id2 == -1){
         break;
     }
     //создание нового узла
-    let newString = tree[first].letter + tree[second].letter;
-    let newFreq = tree[first].freq + tree[second].freq;
+    let newString = tree[id1].letter + tree[id2].letter;
+    let newFreq = tree[id1].freq + tree[id2].freq;
     tree.push(new Node(newString, newFreq));
     //редактирование значений узлов
-    tree[second].used = true;
-    tree[first].used = true;
-    tree[first].father = tree.length - 1;
-    tree[second].father = tree.length - 1;
+    tree[id2].used = true;
+    tree[id1].used = true;
+    tree[id1].father = tree.length - 1;
+    tree[id2].father = tree.length - 1;
 }
 //получение кода
 tree[tree.length - 1].code = '0';
