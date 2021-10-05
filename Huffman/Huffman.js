@@ -1,6 +1,5 @@
 let fs = require('fs');
 function Node(letter, freq, used, father, code){
-    //узел дерева
     this.letter = letter;
     this.freq = freq;
     this.used = used;
@@ -8,11 +7,11 @@ function Node(letter, freq, used, father, code){
     this.code = code;
 }
  
-//чтение из файла
+//данные из файла, перенесенные в строчные
 let inputData = (fs.readFileSync('input.txt')).toString();
 let alph = new Array();
  
-//создание алфавита и просчет количества включений
+//создание алфавита с подсчетом повторений
 for (let i = 0; i < inputData.length; i++){
     if (alph[inputData.charAt(i)])
         alph[inputData.charAt(i)]++;
@@ -20,7 +19,7 @@ for (let i = 0; i < inputData.length; i++){
         alph[inputData.charAt(i)] = 1;
     }
 }
-//создание массива со стартовыми узлами
+//создание массива с узлами
 let tree = new Array();
 for (let i in alph)
 {
@@ -28,7 +27,7 @@ for (let i in alph)
 }
  
 for (let i = 0; i < tree.length - 1; i++){
-    //Ищем узлы с минимальным количеством включений
+    //Поиск узлов с минимальным кол-вом включений
     let minFr1 = inputData.length;
     let minFr2 = inputData.length;
     let first = -1;
@@ -50,17 +49,17 @@ for (let i = 0; i < tree.length - 1; i++){
     if (first == -1 || second == -1){
         break;
     }
-    //создаем новый узел
+    //создание нового узла
     let newString = tree[first].letter + tree[second].letter;
     let newFreq = tree[first].freq + tree[second].freq;
     tree.push(new Node(newString, newFreq));
-    //установка обновленных значений дочерних узлов
+    //редактирование значений узлов
     tree[second].used = true;
     tree[first].used = true;
     tree[first].father = tree.length - 1;
     tree[second].father = tree.length - 1;
 }
-//получения кодовых слов, соответствующих буквам из исходного алфавита
+//получение кода
 tree[tree.length - 1].code = '0';
 tree[tree.length - 1].used = true;
 for (let i = tree.length - 2; i >= 0; i--){
@@ -72,5 +71,5 @@ for (let i = tree.length - 2; i >= 0; i--){
         tree[i].code = tree[tree[i].father].code + '0';
  
 }
-//вывод итогового дерева
+//вывод дерева
 console.log(tree);
