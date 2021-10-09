@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Hamming Code</title>
+        <style>
+            #codedData, #inputData, #decodedData{
+                width: 620px;
+                font-size:500%;
+                color: #333366;
+            }
+        </style>
+        <script>
+        function code(){
+            let inputData = (document.getElementById('inputData').value);
+            let inputDigits = inputData.split('');
+            let n = 0;
+            for (let i=0; i<inputDigits.length; i++){
+                inputDigits[i]=inputDigits[i]*1;
+                if (i>3){
+                    alert('В строке не должно быть больше 4 символов. Перезагрузка страницы через 3...2...1...');
+                    location.reload()
+                }
+                n++;
+            }
+            if (n<=3){
+                alert('В строке не должно быть меньше 4 символов. Перезагрузка страницы через 3...2...1...');
+                    location.reload()
+            }
+            inputDigits.push((inputDigits[0]+inputDigits[2]+inputDigits[3])%2);
+            inputDigits.push((inputDigits[0]+inputDigits[1]+inputDigits[3])%2);
+            inputDigits.push((inputDigits[2]+inputDigits[1]+inputDigits[3])%2); 
+            document.getElementById('codedData').value = inputDigits.join('');
+        }
+        function decode(){
+            let exitData=document.getElementById('codedData').value;
+            if (exitData.length!=7){
+                alert('Не ломайте мой код! Наказание: перезагрузка страницы');
+                location.reload()
+            }
+            if (((exitData[0]+ exitData[2]+ exitData[3]+exitData[4])%2!=0)&&((exitData[0]+exitData[1]+exitData[3]+exitData[5])%2!=0)&&((exitData[2]+exitData[1]+exitData[3]+exitData[6])%2!=0)){
+                alert('Ошибка находится под цифрой номер 4');
+                exitData[3]=(exitData[3]+1)%2;
+            }
+            if (((exitData[0]+ exitData[2]+ exitData[3]+exitData[4])%2!=0)&&((exitData[0]+exitData[1]+exitData[3]+exitData[5])%2!=0)&&((exitData[2]+exitData[1]+exitData[3]+exitData[6])%2==0)){
+                alert('Ошибка находится под цифрой номер 1');
+                exitData[0]=(exitData[0]+1)%2;
+            }
+            if (((exitData[0]+ exitData[2]+ exitData[3]+exitData[4])%2==0)&&((exitData[0]+exitData[1]+exitData[3]+exitData[5])%2!=0)&&((exitData[2]+exitData[1]+exitData[3]+exitData[6])%2!=0)){
+                alert('Ошибка находится под цифрой номер 2');
+                exitData[1]=(exitData[1]+1)%2;
+            }
+            if (((exitData[0]+ exitData[2]+ exitData[3]+exitData[4])%2!=0)&&((exitData[0]+exitData[1]+exitData[3]+exitData[5])%2==0)&&((exitData[2]+exitData[1]+exitData[3]+exitData[6])%2!=0)){
+                alert('Ошибка находится под цифрой номер 3');
+                exitData[2]=(exitData[2]+1)%2;
+            }
+        exitData=exitData.slice(0, -3);
+        document.getElementById('decodedData').value = exitData;
+        }
+        </script>
+    </head>
+    <body>
+        <p> <input type='text' placeholder='Введите данные'  id='inputData'/> Input Data </p>
+        <p> <input type='button' onclick='code()' value='code'/></p>
+        <p> <input type='text' id='codedData' /> Coded Data </p>
+        <p> <input type='button' onclick='decode()' value='decoode'/> </p>
+        <p> <input disabled type=   'text' id='decodedData'/> Decoded Data </p>
+
+    </body>
+
+
+
+    </html>
