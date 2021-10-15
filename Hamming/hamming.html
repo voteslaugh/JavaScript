@@ -22,7 +22,7 @@
                 }
                 n++;
                 /*
-                if (inputDigits[i]===(0||1||"0"||"1")) {
+                if (inputDigits[i]===(0||1||"0"||"1")) {           //почему-то не работает, когда есть нули
                     continue;
                 }
                 else {
@@ -45,44 +45,52 @@
         function decode(){
 
             let exitData=document.getElementById('codedData').value;
-            if (exitData.length!==7){
+            if (exitData.length!==7){                                             //проверка на кол-во символов
                 alert('Не ломайте мой код! Наказание: перезагрузка страницы');
                 location.reload()
             }
-            let first = exitData[0];
+            let first = exitData[0];  //первый символ, второй и т.д.
             let third = exitData[2];
             let fourth = exitData[3];
             let fifth = exitData[4];
             let second = exitData[1];
             let sixth = exitData[5];
             let seventh = exitData[6];
+            //проверка на ошибки с помощью кругов эйлера
+            //проверка на ошибку под 4-ым номером
             if (((Number(first)+ Number(third)+ Number(fourth)+ Number(fifth))%2!==0)&&((Number(first)+ Number(second)+Number(fourth)+ Number(sixth))%2!==0)&&((Number(third)+Number(second)+Number(fourth)+Number(seventh))%2!==0)){
                 fourth=(Number(fourth)+1)%2;
                 alert('Ошибка находится под цифрой номер 4');
             }
+            //проверка на ошибку под 1-ым номером
             if (((Number(first)+ Number(third)+ Number(fourth)+Number(fifth))%2!==0)&&((Number(first)+Number(second)+Number(fourth)+Number(sixth))%2!==0)&&((Number(third)+Number(second)+Number(fourth)+Number(seventh))%2===0)){
                 first=(Number(first)+1)%2;
                 alert('Ошибка находится под цифрой номер 1');
             }
+            //пероверка на ошибку под 2-ым номером
             if (((Number(first)+ Number(third)+ Number(fourth)+Number(fifth))%2===0)&&((Number(first)+Number(second)+Number(fourth)+Number(sixth))%2!==0)&&((Number(third)+Number(second)+Number(fourth)+Number(seventh))%2!==0)){
                 second=(Number(second)+1)%2;
                 alert('Ошибка находится под цифрой номер 2');
             }
+            //проверка на ошибку под 3-им номером
             if (((Number(first)+ Number(third)+ Number(fourth)+Number(fifth))%2!==0)&&((Number(first)+Number(second)+Number(fourth)+Number(sixth))%2===0)&&((Number(third)+Number(second)+Number(fourth)+ Number(seventh))%2!==0)){
                 third=(Number(third)+1)%2;
                 alert('Ошибка находится под цифрой номер 3');
             }
+            //проверока на ошибку под 5-ым номером
             if (((Number(first)+ Number(third)+ Number(fourth)+ Number(fifth))%2!==0)&&((Number(first)+ Number(second)+Number(fourth)+ Number(sixth))%2===0)&&((Number(third)+Number(second)+Number(fourth)+Number(seventh))%2===0)){
                 alert('Ошибка находится под цифрой номер 5');
             }
+            //проверка на ошибку под 6-ым номером
             if (((Number(first)+ Number(third)+ Number(fourth)+ Number(fifth))%2===0)&&((Number(first)+ Number(second)+Number(fourth)+ Number(sixth))%2!==0)&&((Number(third)+Number(second)+Number(fourth)+Number(seventh))%2===0)){
                 alert('Ошибка находится под цифрой номер 6');
             }
+            //проверка на ошибку под 7-ым номером
             if (((Number(first)+ Number(third)+ Number(fourth)+ Number(fifth))%2===0)&&((Number(first)+ Number(second)+Number(fourth)+ Number(sixth))%2===0)&&((Number(third)+Number(second)+Number(fourth)+Number(seventh))%2!==0)){
                 alert('Ошибка находится под цифрой номер 7');
             }
-            exitData=[first,second, third, fourth];
-            exitData=exitData.join('');
+            exitData=[first,second, third, fourth]; //запись исправленного массива
+            exitData=exitData.join(''); //соединяет массив в строку
             document.getElementById('decodedData').value = exitData;
         }
     </script>
