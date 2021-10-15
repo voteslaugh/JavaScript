@@ -21,6 +21,17 @@
                     location.reload()
                 }
                 n++;
+                /*
+                if (inputDigits[i]===(0||1||"0"||"1")) {
+                    continue;
+                }
+                else {
+                    alert('В строке должны быть только нули и единицы. ***автоматическая перезагрузка***')
+                    location.reload();
+                    break;
+                }
+                */
+
             }
             if (n<=3){
                 alert('В строке не должно быть меньше 4 символов. Перезагрузка страницы через 3...2...1...');
@@ -47,19 +58,28 @@
             let seventh = exitData[6];
             if (((Number(first)+ Number(third)+ Number(fourth)+ Number(fifth))%2!==0)&&((Number(first)+ Number(second)+Number(fourth)+ Number(sixth))%2!==0)&&((Number(third)+Number(second)+Number(fourth)+Number(seventh))%2!==0)){
                 fourth=(Number(fourth)+1)%2;
-                //alert('Ошибка находится под цифрой номер 4');
+                alert('Ошибка находится под цифрой номер 4');
             }
             if (((Number(first)+ Number(third)+ Number(fourth)+Number(fifth))%2!==0)&&((Number(first)+Number(second)+Number(fourth)+Number(sixth))%2!==0)&&((Number(third)+Number(second)+Number(fourth)+Number(seventh))%2===0)){
                 first=(Number(first)+1)%2;
-                //alert('Ошибка находится под цифрой номер 1');
+                alert('Ошибка находится под цифрой номер 1');
             }
             if (((Number(first)+ Number(third)+ Number(fourth)+Number(fifth))%2===0)&&((Number(first)+Number(second)+Number(fourth)+Number(sixth))%2!==0)&&((Number(third)+Number(second)+Number(fourth)+Number(seventh))%2!==0)){
                 second=(Number(second)+1)%2;
-                //alert('Ошибка находится под цифрой номер 2');
+                alert('Ошибка находится под цифрой номер 2');
             }
             if (((Number(first)+ Number(third)+ Number(fourth)+Number(fifth))%2!==0)&&((Number(first)+Number(second)+Number(fourth)+Number(sixth))%2===0)&&((Number(third)+Number(second)+Number(fourth)+ Number(seventh))%2!==0)){
                 third=(Number(third)+1)%2;
-                //alert('Ошибка находится под цифрой номер 3');
+                alert('Ошибка находится под цифрой номер 3');
+            }
+            if (((Number(first)+ Number(third)+ Number(fourth)+ Number(fifth))%2!==0)&&((Number(first)+ Number(second)+Number(fourth)+ Number(sixth))%2===0)&&((Number(third)+Number(second)+Number(fourth)+Number(seventh))%2===0)){
+                alert('Ошибка находится под цифрой номер 5');
+            }
+            if (((Number(first)+ Number(third)+ Number(fourth)+ Number(fifth))%2===0)&&((Number(first)+ Number(second)+Number(fourth)+ Number(sixth))%2!==0)&&((Number(third)+Number(second)+Number(fourth)+Number(seventh))%2===0)){
+                alert('Ошибка находится под цифрой номер 6');
+            }
+            if (((Number(first)+ Number(third)+ Number(fourth)+ Number(fifth))%2===0)&&((Number(first)+ Number(second)+Number(fourth)+ Number(sixth))%2===0)&&((Number(third)+Number(second)+Number(fourth)+Number(seventh))%2!==0)){
+                alert('Ошибка находится под цифрой номер 7');
             }
             exitData=[first,second, third, fourth];
             exitData=exitData.join('');
