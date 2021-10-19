@@ -1,0 +1,9 @@
+put 100
+putin 101 1
+putin 102 1
+putin 103 1
+mul 101 102 101
+sum 102 103 102
+goif!= 100 102 11
+output 101
+exit

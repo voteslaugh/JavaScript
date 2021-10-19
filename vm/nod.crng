@@ -1,0 +1,7 @@
+put 100
+put 101
+ascend 100 101
+sub 101 100 101
+goif!eq 100 101 4
+output 101
+exit
