@@ -34,7 +34,15 @@ while(true){
         i=i+4;
     }
     if(ram[i]==="goifbgr"){
-        if (ram[Number(ram[i+1])]>ram[Number(ram[i+2])]-1){
+        if (ram[Number(ram[i+1])] > ram[Number(ram[i+2])]-1){
+            i = Number(ram[i+3]);
+        }
+        else{
+            i=i+4;
+        }
+    }
+    if(ram[i]==="goifless"){
+        if (ram[Number(ram[i+1])] < ram[Number(ram[i+2])]-1){
             i = Number(ram[i+3]);
         }
         else{
