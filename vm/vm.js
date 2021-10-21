@@ -2,12 +2,14 @@ let fs = require('fs');
 let arg = process.argv;
 let ram = [];
 let i = 0;
-ram=fs.readFileSync("input.crng").toString().split(/\s+/);
+let counter = 0;
+ram=fs.readFileSync("nod.crng").toString().split(/\s+/);
 //console.log(ram);
 while(true){
     if(ram[i]==="put"){
-        ram[Number(ram[i+1])] = arg[Number(ram[i+1])%10+2]; //данные из консоли записываются в массив
+        ram[Number(ram[i+1])] = arg[2+counter]; //данные из консоли записываются в массив
         i=i+2;
+        counter++;
     }
     if(ram[i]==="putin"){
         ram[Number(ram[i+1])]=Number(ram[i+2]); //положить в ячейку определенное число
