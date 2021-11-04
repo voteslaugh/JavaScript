@@ -15,13 +15,13 @@ for (let i = 0; i < m; i++){
     valS+=s.charCodeAt(i);
 }
 let count;
-for (let i=1; i<n-m+1; i++){
+for (let i=1; i<n-m+2; i++){
     if (i>1){
         valS = valS - s.charCodeAt(i-2) + s.charCodeAt(i+m-2);
     }
     if (valS===valT){
         count = 0;
-        for (let j=i-1; j<i+m; j++){
+        for (let j=i-1; j<i+m+1; j++){
             if (s[j]!==t[count]){
                 break;
             }
