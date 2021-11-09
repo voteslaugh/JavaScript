@@ -1,3 +1,5 @@
+const { PerformanceObserver, performance } = require('perf_hooks');
+let time = performance.now();
 let arg = process.argv;
 let s = arg[2].toString();
 let t = arg[3].toString();
@@ -25,3 +27,5 @@ for (let i=1; i<n-m+2; i++){
 
 }
 console.log(arr.join(', '));
+time = performance.now() - time;
+console.log('Время выполнения = ', time);
