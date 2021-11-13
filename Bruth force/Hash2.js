@@ -14,7 +14,7 @@ for (let i = 0; i < m; i++){
     valS+=s.charCodeAt(i)*(Math.pow(2,m-i-1));;
 }
 
-let i=0;
+let i=1;
 while (i<=n-m+1) {
     if (valT === valS) {
         let j = 0;
