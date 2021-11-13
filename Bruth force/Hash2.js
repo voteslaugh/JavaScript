@@ -1,8 +1,9 @@
 const { PerformanceObserver, performance } = require('perf_hooks');
+let fs = require('fs');
 let time = performance.now();
 let arg = process.argv;
-let s = arg[2].toString();
-let t = arg[3].toString();
+let s = fs.readFileSync(arg[2],'utf8').toString();
+let t = fs.readFileSync(arg[3],'utf8').toString();
 let n = Number(s.length);
 let m = Number(t.length);
 let arr = [];
@@ -21,7 +22,7 @@ while (i<=n-m+1) {
         while (s.charAt(i-1+j) === t.charAt(j)){
             j++
             if (j === m){
-                console.log(i);
+                arr.push(i);
                 break;
             }
         }
@@ -29,5 +30,6 @@ while (i<=n-m+1) {
     valS = (valS - s.charCodeAt(i-1)*(Math.pow(2,m-1)))*2 + s.charCodeAt(i-1+m) ;
     i++;
 }
+console.log(arr.join(', '));
 time = performance.now() - time;
 console.log('Время выполнения = ', time);

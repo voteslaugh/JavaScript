@@ -1,8 +1,9 @@
 const { PerformanceObserver, performance } = require('perf_hooks');
+let fs = require('fs');
 let time = performance.now();
 let arg = process.argv;
-let s = arg[2].toString();
-let t = arg[3].toString();
+let s = fs.readFileSync(arg[2],'utf8').toString();
+let t = fs.readFileSync(arg[3],'utf8').toString();
 let n = Number(s.length);
 let m = Number(t.length);
 let arr = [];
