@@ -8,14 +8,12 @@ let m = Number(t.length);
 let arr = [];
 
 let valT = 0;
-for (let i = 0; i < m; i++){
-    valT+=t.charCodeAt(i);
-}
-
 let valS = 0;
 for (let i = 0; i < m; i++){
+    valT+=t.charCodeAt(i);
     valS+=s.charCodeAt(i);
 }
+
 let count;
 for (let i=1; i<n-m+2; i++){
     if (i>1){
