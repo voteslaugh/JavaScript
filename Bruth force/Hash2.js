@@ -18,9 +18,9 @@ let i=0;
 while (i<=n-m+1) {
     if (valT === valS) {
         let j = 0;
-        while (s.charAt(i-1+j) == t.charAt(j)){
+        while (s.charAt(i-1+j) === t.charAt(j)){
             j++
-            if (b === m){
+            if (j === m){
                 console.log(i);
                 break;
             }
