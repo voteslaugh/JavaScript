@@ -1,72 +1,79 @@
-let fs = require("fs");
-let alph = new Array();
-let arg = process.argv;
-let inputData = fs.readFileSync(arg[2]).toString(); //записывает данные из файла в инпут дата
+let string='abrakadabra';
+let tree = [];
+let alph = [];
+let num1, num2 = 0;
+let str = '';
+function Node (letter, freq, used, father, code){
+    this.letter=letter;
+    this.freq=freq;
+    this.used=used;
+    this.father=father;
+    this.code=code;
+}
+console.log(Node);
 
-function Node(letter, freq, used, father, code) {
-    this.letter = letter;
-    this.freq = freq;
-    this.used = used;
-    this.father = father;
-    this.code = code;
-}
-//инициализация алфавита
-for (let i = 0; i < inputData.length; i++) {
-    alph[inputData.charAt(i)] = 0;
-}
-for (let i = 0; i < inputData.length; i++) {
-    alph[inputData.charAt(i)] += 1;
+for (let i=0; i<string.length;i++){
+    alph[string.charAt(i)]=0;
 }
 
-let tree = new Array();
+for (let i=0; i<string.length;i++){
+    alph[string.charAt(i)]++;
+}
 
-for (c in alph) {
-    let n = new Node(c, alph[c], false, null, '');
+for (let i in alph){
+    let n = new Node(i, alph[i], false, null, '');
     tree.push(n);
 }
-trlng = tree.length;
-for (let i = 0; i < trlng - 1; i++) {
-    let min = inputData.length;
-    let first;
-    let second;
-    for (let k = 0; k < tree.length; k++) {
-        if (min > tree[k].freq && !tree[k].used) {
-            min = tree[k].freq;
-            first = k;
-        }
-    }
-    tree[first].used = true;
-    tree[first].father = tree.length;
-    tree[first].code = '0';
-    let trmin = inputData.length;
-    for (let i = 0; i < tree.length; i++) {
-        if (trmin > tree[i].freq && !tree[i].used) {
-            trmin = tree[i].freq;
-            second = i;
-        }
-    }
 
-    tree[second].used = true;
-    tree[second].father = tree.length;
-    tree[second].code = '1';
-    let n = new Node(tree[first].letter + tree[second].letter, tree[first].freq + tree[second].freq, false, null, '')
+while (tree[tree.length-1].freq !== string.length){
+    let min1=string.length;
+    let min2=string.length;
+    for (let i in tree){
+        if (tree[i].freq<=min1 && tree[i].used==0){
+            min1=tree[i].freq;
+            num1=i;
+        }
+    }
+    tree[num1].used=true;
+    for (let i in tree){
+        if (tree[i].freq<=min2 && tree[i].used===0){
+            min2=tree[i].freq;
+            num2=i;
+        }
+    }
+    tree[num2].used=true;
+
+    let n = new Node(tree[num1].letter+tree[num2].letter, tree[num1].freq+tree[num2].freq, 0, null, '');
     tree.push(n);
+    tree[num1].father=tree.length-1;
+    tree[num2].father=tree.length-1;
+    let s=(tree[num1].letter).length;
+    tree[num1].code='1';
+    tree[num2].code='0';
 }
-let final = [];
-for (let i = 0; i < trlng; i++) {
-    let g = i;
-    final[tree[g].letter] = '';
-    while (tree[g].father != null) {
-        final[tree[i].letter] = tree[g].code + final[tree[i].letter];
-        g = tree[g].father;
+for (let i=tree.length-2; i!==-1; i--) {
+    tree[i].code=tree[tree[i].father].code+tree[i].code;
+    if ((tree[i].letter).length===1)
+        alph[tree[i].letter]=tree[i].code;
+}
 
+for (let i=0; i<string.length; i++)
+    str+=alph[string[i]];
+
+console.log(tree)
+console.log(alph)
+console.log(str)
+
+let out='';
+let p='';
+
+for (let i=0;i<=str.length; i++){
+    p+=str[i];
+    for (let j in alph){
+        if (p===alph[j]){
+            out+=j
+            p='';
+        }
     }
 }
-let str = ''; 
-for (let i = 0; i < trlng; i++) {
-    let j = inputData[i];
-    str += final[j];
-
-
-}
-fs.writeFileSync(arg[3],str); //Записывает данные в файл
+console.log(out);
