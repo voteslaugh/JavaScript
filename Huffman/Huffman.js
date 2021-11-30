@@ -45,7 +45,7 @@ else {
     }
 
 //Построение дерева
-    while (tree.some(elem => elem.used === false)){
+    while (tree.some(elem => elem.used == false)){
         let minIndex1, minIndex2;
         freq = Infinity;
         for (let i in tree){
@@ -89,7 +89,7 @@ else {
         tree.push(n);
     }
 
-    console.log('• Коды символов:')
+    console.log('Коды символов:')
     for (let i in alphabet){
         let codeOfSymb = '';
         let j = 0;
@@ -118,9 +118,9 @@ console.log('Закодированная строка: ', codedString);
 
 //Декодирование закодированной строки
 let decodedData = '';
-let symbol = ''
+let symbol = '';
 for (let i in codedString){
-    symbol += codedString[i];
+    symbol += Number(codedString[i]);
     if (symbCodes[symbol] !== undefined){
         decodedData += symbCodes[symbol];
         symbol = '';
