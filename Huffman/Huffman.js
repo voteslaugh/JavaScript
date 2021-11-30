@@ -4,11 +4,11 @@ let alphabet = [];
 let symbCodes = {};
 
 //Функция создания узла дерева
-function Node(letter, frequency, used, parent, code){
+function Node(letter, frequency, used, father, code){
     this.letter = letter;
     this.frequency = frequency;
     this.used = used;
-    this.parent = parent;
+    this.father = father;
     this.code = code;
 }
 //Считывание строки с консоли
@@ -72,8 +72,8 @@ else {
         tree[minIndex2].used = 1;
 
         //Задание родительского элемента для найденных узлов
-        tree[minIndex1].parent = tree.length;
-        tree[minIndex2].parent = tree.length;
+        tree[minIndex1].father = tree.length;
+        tree[minIndex2].father = tree.length;
 
         //Задание кода ветки от родительского эл-та к узлу
         tree[minIndex1].code += '0';
@@ -100,8 +100,8 @@ else {
 
         do {
             codeOfSymb = tree[j].code + codeOfSymb;
-            j = tree[j].parent;
-        } while ((tree[j].parent != null))
+            j = tree[j].father;
+        } while ((tree[j].father != null))
 
         symbCodes[codeOfSymb] = i;
         alphabet[i] = codeOfSymb;
