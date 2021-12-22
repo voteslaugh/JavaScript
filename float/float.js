@@ -1,7 +1,7 @@
 function getBinaryString(inputData)
 {
     let bin=[];
-    inputData=inputData.replace(/[^0-9,+.-]/g,"");
+    inputData=inputData.toString().replace(/[^0-9,+.-]/g,"");
     let temp=inputData[0].toString();
     let twonumbers=Boolean(false);
     for(let i=1; i<inputData.length; i++)
@@ -41,14 +41,11 @@ function getDecimalNumb(float)
     let binar=float[2];
     float[0]==0 ? numb="" : numb="-";
     let deg=parseInt(float[1], 2)-127;
-    binar="1"+binar.slice(0, deg)+"."+binar.slice(deg);
-    console.log(binar);
+    binar="1"+binar.toString().slice(0, deg)+"."+binar.toString().slice(deg);
     numb+=binar.toString();
     numb=numb.split(".");
     let tail = numb[1];
-    console.log(numb);
     numb=Number(parseInt(numb[0], 2));
-    //console.log(numb);
     for(let i=1; i<tail.toString().length;i++) {
         let x=tail[i-1]*(1/Math.pow(2, i));
         float[0]==0 ? numb+=x : numb-=x;
@@ -70,9 +67,7 @@ function getFloat(number)
             k++;
         }
         let tmp=Number(number)/(Math.pow(10, k));
-        //console.log(tmp);
         tmp=tmp.toString().substr(2);
-        //console.log(tmp);
         if(tmp.toString().length<24)
             tmp=tmp+("0".repeat(24-tmp.length));
         flt[2]=tmp;
@@ -87,9 +82,7 @@ function getFloat(number)
             k++;
         }
         let tmp=Number(number)*(Math.pow(10, k));
-       //console.log(tmp);
         tmp=tmp.toString().substr(2);
-        //console.log(tmp);
         if(tmp.toString().length<24)
             tmp=tmp+("0".repeat(24-tmp.length));
         flt[2]=tmp;
@@ -119,19 +112,39 @@ function binaryAddition(a,b){
             result = sum + result;
             carry = 0;
         }
-        a = a.toString().slice(0, -1)
-        b = b.toString().slice(0, -1)
+        a = a.toString().slice(0, -1);
+        b = b.toString().slice(0, -1);
     }
     return result;
 }
+
+function binarySubtraction(a,b){
+    let result = "",
+        carry = 0;
+    while(a || b){
+        let sub = Number(a.toString().slice(-1)) - Number(b.toString().slice(-1)) + carry;
+        if( sub < 0 ){
+            result="1"+result;
+            carry =-1;
+        }
+        else{
+            result = sub.toString()+result;
+            carry = 0;
+        }
+        a = a.toString().slice(0, -1);
+        b = b.toString().slice(0, -1);
+    }
+    return result;
+}
+
 function operation(input)
 {
     let greater="", less="";
-    console.log(input);
+    console.log("\x1b[32m Представление чисел в формате IEEE 754: ");
     let first=getFloat(input[0]);
-    console.log(first);
     let second=getFloat(input[2]);
-    console.log(second);
+    console.log("Число номер один: "+first.join(" "));
+    console.log("Число номер два: "+second.join(" "));
     let k=0;
     let secLess = new Boolean(false);
     Math.abs(Number(first[1])) > Math.abs(Number(second[1])) ? secLess = true : secLess = false;
@@ -153,42 +166,90 @@ function operation(input)
     }
     if(secLess==true)
     {
-        second[2]="1"+second[2];
+        second[2]="1"+second[2].toString();
         second[2]="0".repeat(k)+second[2].toString();
         second[2]=second[2].slice(0, 25);
         first[2]="1"+first[2];
     }
     else
     {
-        first[2]="1"+first[2];
+        first[2]="1"+first[2].toString();
         first[2] = "0".repeat(k) + first[2].toString();
         first[2]=first[2].substr(0, 25);
-        second[2]="1"+second[2];
+        second[2]="1"+second[2].toString();
     }
     if((first[0]==0&&second[0]==0&&input[1]=="+")||(first[0]==1&&second[0]==1&&input[1]=="+")||(first[0]==1&&second[0]==0&&input[1]=="-"))
     {
         first[2]=binaryAddition(first[2].toString(), second[2].toString());
-        //console.log(first[2]);
-        //first[2]=first[2].substr(1);
-        //console.log(first[2]);
-        if(first[2].toString().length>24){
-            first[1]=binaryAddition(first[1], first[2].slice(0, first[2].length-25));
-            first[2]=first[2].slice(1, 25);
+    }
+    else if((first[0]==0&&second[0]==1&&input[1]=="+")||(first[0]==0&&second[0]==0&&input[1]=="-"))
+    {
+        if(+first[2]<+second[2])
+        {
+            let temp=first[2];
+            first[2]=second[2];
+            second[2]=temp;
+            first[0]=1;
+        }
+        first[2]=binarySubtraction(first[2].toString(), second[2].toString());
+        while(first[2].charAt(0).toString()=="0")
+        {
+            first[1]=binarySubtraction(first[1], "00000001");
+            first[2]=first[2].substr(1)+"0";
         }
     }
-    else
+    else if((first[0]==1&&second[0]==0&&input[1]=="+")||(first[0]==1&&second[0]==1&&input[1]=="-"))
     {
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        if(+first[2]<+second[2])
+        {
+            let temp=first[2];
+            first[2]=second[2];
+            second[2]=temp;
+            first[0]=1;
+        }
+        first[2]=binarySubtraction(first[2].toString(), second[2].toString());
+        while(first[2].charAt(0).toString()=="0")
+        {
+            first[1]=binarySubtraction(first[1], "00000001");
+            first[2]=first[2].substr(1)+"0";
+        }
+    }
+    if(first[2].toString().length>24){
+        first[1]=binaryAddition(first[1], first[2].slice(0, first[2].length-25));
+        first[2]=first[2].slice(1, 25);
+    }
+    else{
+        console.log("Что-то пошло не так");
+        return;
+
     }
     return first;
 }
+
 let fs = require('fs');
 let arg = process.argv;
 let inputData=fs.readFileSync("data.txt").toString();
-inputData=getBinaryString(inputData);
-let out;
-if(inputData[1]=="+"||inputData[1]=="-"){
-    out=operation(inputData);
-    console.log(out);
-    console.log(getDecimalNumb(out));
+console.log("\x1b[32m Исходная строка: ", inputData)
+let bin=getBinaryString(inputData);
+if(bin[1]=="+"||bin[1]=="-"){
+    console.log("\x1b[32m Ваше выражение: ", bin.join(" "));
+    console.log("\x1b[35m--ʕ ᵔᴥᵔ ʔ--ʕ ᵔᴥᵔ ʔ--ʕ ᵔᴥᵔ ʔ--ʕ ᵔᴥᵔ ʔ--ʕ ᵔᴥᵔ ʔ--");
+    let out = operation(bin);
+    console.log("\x1b[35m--ʕ ᵔᴥᵔ ʔ--ʕ ᵔᴥᵔ ʔ--ʕ ᵔᴥᵔ ʔ--ʕ ᵔᴥᵔ ʔ--ʕ ᵔᴥᵔ ʔ--", );
+    console.log("Ответ в формате IEEE 754: ", out.join(" "));
+    console.log("\x1b[35m--ʕ ᵔᴥᵔ ʔ--ʕ ᵔᴥᵔ ʔ--ʕ ᵔᴥᵔ ʔ--ʕ ᵔᴥᵔ ʔ--ʕ ᵔᴥᵔ ʔ--", );
+    console.log("Ответ в десятичном формате: ", getDecimalNumb(out));
+}
+else if(bin[1]==undefined)
+{
+    console.log("\x1b[32m Двоичное представление числа: ", Number(bin));
+    console.log("\x1b[35m--ʕ ᵔᴥᵔ ʔ--ʕ ᵔᴥᵔ ʔ--ʕ ᵔᴥᵔ ʔ--ʕ ᵔᴥᵔ ʔ--ʕ ᵔᴥᵔ ʔ--");
+    let float=getFloat(bin);
+    console.log("\x1b[32m Представление числа в формате IEEE 754: ", float.join(" "));
+    console.log("\x1b[35m--ʕ ᵔᴥᵔ ʔ--ʕ ᵔᴥᵔ ʔ--ʕ ᵔᴥᵔ ʔ--ʕ ᵔᴥᵔ ʔ--ʕ ᵔᴥᵔ ʔ--", );
+    let numb=getDecimalNumb(float);
+    console.log("\x1b[32m Само число: ", numb);
+}
+else{
+    console.log("\x1b[31m Что-то пошло не так");
 }
