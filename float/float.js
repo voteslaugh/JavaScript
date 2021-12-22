@@ -2,7 +2,7 @@ function getBinaryString(inputData)
 {
     let bin=[];
     inputData=inputData.replace(/[^0-9,+.-]/g,"");
-    let temp=inputData[0];
+    let temp=inputData[0].toString();
     let twonumbers=Boolean(false);
     for(let i=1; i<inputData.length; i++)
     {
@@ -39,17 +39,19 @@ function getDecimalNumb(float)
 {
     let numb=[];
     let binar=float[2];
-    float[0]==0 ? numb=1 : numb=-1;
+    float[0]==0 ? numb="" : numb="-";
     let deg=parseInt(float[1], 2)-127;
     binar="1"+binar.slice(0, deg)+"."+binar.slice(deg);
     console.log(binar);
-    numb=binar.split(".");
+    numb+=binar.toString();
+    numb=numb.split(".");
     let tail = numb[1];
     console.log(numb);
-    numb=Number(parseInt(binar, 2));
+    numb=Number(parseInt(numb[0], 2));
+    //console.log(numb);
     for(let i=1; i<tail.toString().length;i++) {
         let x=tail[i-1]*(1/Math.pow(2, i));
-        numb += x;
+        float[0]==0 ? numb+=x : numb-=x;
     }
     numb=numb.toFixed(2);
     return numb;
@@ -125,14 +127,14 @@ function binaryAddition(a,b){
 function operation(input)
 {
     let greater="", less="";
-    console.log(input[0]);
+    console.log(input);
     let first=getFloat(input[0]);
     console.log(first);
     let second=getFloat(input[2]);
     console.log(second);
     let k=0;
     let secLess = new Boolean(false);
-    Number(first[1]) > Number(second[1]) ? secLess = true : secLess = false;
+    Math.abs(Number(first[1])) > Math.abs(Number(second[1])) ? secLess = true : secLess = false;
     if (first[1].toString()!=second[1].toString()) {
         if (Number(first[1]) > Number(second[1])) {
             less = Number(second[1]);
@@ -163,10 +165,8 @@ function operation(input)
         first[2]=first[2].substr(0, 25);
         second[2]="1"+second[2];
     }
-    if((first[0]==0&&second[0]==0&&input[1]=="+")||(first[0]==0&&second[0]==1&&input[1]=="-"))
+    if((first[0]==0&&second[0]==0&&input[1]=="+")||(first[0]==1&&second[0]==1&&input[1]=="+")||(first[0]==1&&second[0]==0&&input[1]=="-"))
     {
-        //console.log(first[2]);
-       // console.log(second[2]);
         first[2]=binaryAddition(first[2].toString(), second[2].toString());
         //console.log(first[2]);
         //first[2]=first[2].substr(1);
@@ -189,7 +189,6 @@ inputData=getBinaryString(inputData);
 let out;
 if(inputData[1]=="+"||inputData[1]=="-"){
     out=operation(inputData);
-    console.log(out);
     console.log(out);
     console.log(getDecimalNumb(out));
 }
