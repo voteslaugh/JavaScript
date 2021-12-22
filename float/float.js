@@ -35,6 +35,26 @@ function getBinaryString(inputData)
     return bin;
 }
 
+function getDecimalNumb(float)
+{
+    let numb=[];
+    let binar=float[2];
+    float[0]==0 ? numb=1 : numb=-1;
+    let deg=parseInt(float[1], 2)-127;
+    binar="1"+binar.slice(0, deg)+"."+binar.slice(deg);
+    console.log(binar);
+    numb=binar.split(".");
+    let tail = numb[1];
+    console.log(numb);
+    numb=Number(parseInt(binar, 2));
+    for(let i=1; i<tail.toString().length;i++) {
+        let x=tail[i-1]*(1/Math.pow(2, i));
+        numb += x;
+    }
+    numb=numb.toFixed(2);
+    return numb;
+}
+
 function getFloat(number)
 {
     let flt=[];
@@ -48,7 +68,9 @@ function getFloat(number)
             k++;
         }
         let tmp=Number(number)/(Math.pow(10, k));
-        tmp=tmp.toString().slice(2);
+        //console.log(tmp);
+        tmp=tmp.toString().substr(2);
+        //console.log(tmp);
         if(tmp.toString().length<24)
             tmp=tmp+("0".repeat(24-tmp.length));
         flt[2]=tmp;
@@ -63,7 +85,9 @@ function getFloat(number)
             k++;
         }
         let tmp=Number(number)*(Math.pow(10, k));
-        tmp=tmp.toString().slice(2);
+       //console.log(tmp);
+        tmp=tmp.toString().substr(2);
+        //console.log(tmp);
         if(tmp.toString().length<24)
             tmp=tmp+("0".repeat(24-tmp.length));
         flt[2]=tmp;
@@ -80,52 +104,92 @@ function getFloat(number)
     return flt;
 }
 
-function halfAdder(a, b){
-    const sum = xor(a,b);
-    const carry = and(a,b);
-    return [sum, carry];
-}
-function fullAdder(a, b, carry){
-    halfAdd = halfAdder(a,b);
-    const sum = xor(carry, halfAdd[0]);
-    carry = and(carry, halfAdd[0]);
-    carry = or(carry, halfAdd[1]);
-    return [sum, carry];
-}
-function xor(a, b){return (a === b ? 0 : 1);}
-function and(a, b){return a == 1 && b == 1 ? 1 : 0;}
-function or(a, b){return (a || b);}
-function binarySum(a, b){
-    let sum = '';
-    let carry = '';
-    for(let i = a.length-1;i>=0; i--){
-        if(i == a.length-1){
-            const halfAdd1 = halfAdder(a[i],b[i]);
-            sum = halfAdd1[0]+sum;
-            carry = halfAdd1[1];
-        }else{
-            const fullAdd = fullAdder(a[i],b[i],carry);
-            sum = fullAdd[0]+sum;
-            carry = fullAdd[1];
+function binaryAddition(a,b){
+    let result = "",
+        carry = 0;
+    while(a || b || carry){
+        let sum = +a.toString().slice(-1) + +b.toString().slice(-1) + carry;
+        if( sum > 1 ){
+            result = sum%2 + result;
+            carry = 1;
         }
+        else{
+            result = sum + result;
+            carry = 0;
+        }
+        a = a.toString().slice(0, -1)
+        b = b.toString().slice(0, -1)
     }
-    return carry ? carry + sum : sum;
+    return result;
 }
-
 function operation(input)
 {
-
+    let greater="", less="";
+    console.log(input[0]);
+    let first=getFloat(input[0]);
+    console.log(first);
+    let second=getFloat(input[2]);
+    console.log(second);
+    let k=0;
+    let secLess = new Boolean(false);
+    Number(first[1]) > Number(second[1]) ? secLess = true : secLess = false;
+    if (first[1].toString()!=second[1].toString()) {
+        if (Number(first[1]) > Number(second[1])) {
+            less = Number(second[1]);
+            greater = Number(first[1]);
+            second[1] = first[1];
+        } else {
+            greater = Number(second[1]);
+            less = Number(first[1]);
+            first[1] = second[1];
+        }
+        while (less.toString() != greater.toString()) {
+            let one = "1";
+            less = binaryAddition(less.toString(), one.toString());
+            k++;
+        }
+    }
+    if(secLess==true)
+    {
+        second[2]="1"+second[2];
+        second[2]="0".repeat(k)+second[2].toString();
+        second[2]=second[2].slice(0, 25);
+        first[2]="1"+first[2];
+    }
+    else
+    {
+        first[2]="1"+first[2];
+        first[2] = "0".repeat(k) + first[2].toString();
+        first[2]=first[2].substr(0, 25);
+        second[2]="1"+second[2];
+    }
+    if((first[0]==0&&second[0]==0&&input[1]=="+")||(first[0]==0&&second[0]==1&&input[1]=="-"))
+    {
+        //console.log(first[2]);
+       // console.log(second[2]);
+        first[2]=binaryAddition(first[2].toString(), second[2].toString());
+        //console.log(first[2]);
+        //first[2]=first[2].substr(1);
+        //console.log(first[2]);
+        if(first[2].toString().length>24){
+            first[1]=binaryAddition(first[1], first[2].slice(0, first[2].length-25));
+            first[2]=first[2].slice(1, 25);
+        }
+    }
+    else
+    {
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    }
+    return first;
 }
 let fs = require('fs');
 let arg = process.argv;
 let inputData=fs.readFileSync("data.txt").toString();
 inputData=getBinaryString(inputData);
-let first=[];
-let second=[];
-if(inputData[1]!=undefined){
-    first=getFloat(inputData[0]);
-    second=getFloat(inputData[2]);
+let out;
+if(inputData[1]=="+"||inputData[1]=="-"){
+    out=operation(inputData);
+    console.log(out);
+    console.log(out);
+    console.log(getDecimalNumb(out));
 }
-console.log(first);
-console.log(second);
-console.log(binarySum(first[2], second[2]));
